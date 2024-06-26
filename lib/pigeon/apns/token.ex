@@ -7,9 +7,9 @@ defmodule Pigeon.APNS.Token do
   # seconds - 10 seconds short of one hour
   @token_max_age 3_590
 
-  @type t :: {non_neg_integer(), binary() | nil}
+  @type t :: binary() | nil
 
-  @spec start_link((() -> any())) :: Agent.on_start()
+  @spec start_link((-> any())) :: Agent.on_start()
   def start_link(_) do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
