@@ -1,7 +1,7 @@
 defmodule PigeonTest do
   use ExUnit.Case
 
-  @n %Pigeon.FCM.Notification{target: {:token, "test"}}
+  @n %Pigeon.FCM_V1.Notification{target: {:token, "test"}}
 
   test "json_library/0 defaults to Jason" do
     assert Pigeon.json_library() == Jason
@@ -46,7 +46,7 @@ defmodule PigeonTest do
       assert Pigeon.push(PigeonTest.Sandbox, @n, on_response: on_response) ==
                :ok
 
-      assert_receive(%Pigeon.FCM.Notification{response: :success}, 5_000)
+      assert_receive(%Pigeon.FCM_V1.Notification{response: :success}, 5_000)
     end
 
     test "asynchronously sends a list of notifications" do
@@ -56,8 +56,8 @@ defmodule PigeonTest do
       assert Pigeon.push(PigeonTest.Sandbox, [@n, @n], on_response: on_response) ==
                [:ok, :ok]
 
-      assert_receive(%Pigeon.FCM.Notification{response: :success}, 5_000)
-      assert_receive(%Pigeon.FCM.Notification{response: :success}, 5_000)
+      assert_receive(%Pigeon.FCM_V1.Notification{response: :success}, 5_000)
+      assert_receive(%Pigeon.FCM_V1.Notification{response: :success}, 5_000)
     end
 
     test "blackholes the response if nil" do

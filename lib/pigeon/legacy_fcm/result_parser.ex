@@ -1,4 +1,4 @@
-defmodule Pigeon.LegacyFCM.ResultParser do
+defmodule Pigeon.FCM.ResultParser do
   @moduledoc false
 
   def parse([], [], notif) do

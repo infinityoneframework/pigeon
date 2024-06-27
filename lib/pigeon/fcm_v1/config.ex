@@ -1,4 +1,4 @@
-defmodule Pigeon.FCM.Config do
+defmodule Pigeon.FCM_V1.Config do
   @moduledoc false
 
   defstruct port: 443,
@@ -14,15 +14,15 @@ defmodule Pigeon.FCM.Config do
         }
 
   @doc ~S"""
-  Returns a new `FCM.Config` with given `opts`.
+  Returns a new `FCM_V1.Config` with given `opts`.
 
   ## Examples
 
-      iex> Pigeon.FCM.Config.new(
+      iex> Pigeon.FCM_V1.Config.new(
       ...>   project_id: "example-project",
       ...>   service_account_json: "{\"dummy\":\"contents\"}"
       ...> )
-      %Pigeon.FCM.Config{
+      %Pigeon.FCM_V1.Config{
         port: 443,
         project_id: "example-project",
         service_account_json: %{"dummy" => "contents"},
@@ -68,7 +68,7 @@ defmodule Pigeon.FCM.Config do
   end
 end
 
-defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
+defimpl Pigeon.Configurable, for: Pigeon.FCM_V1.Config do
   @moduledoc false
 
   require Logger
@@ -76,7 +76,7 @@ defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
   import Pigeon.Tasks, only: [process_on_response: 1]
 
   alias Pigeon.Encodable
-  alias Pigeon.FCM.{Config, Error}
+  alias Pigeon.FCM_V1.{Config, Error}
 
   @type sock :: {:sslsocket, any, pid | {any, any}}
 

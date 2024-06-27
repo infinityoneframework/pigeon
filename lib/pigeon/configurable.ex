@@ -25,7 +25,7 @@ defprotocol Pigeon.Configurable do
       ...> end
       "Got ping!"
 
-      iex> schedule_ping(%Pigeon.FCM.Config{})
+      iex> schedule_ping(%Pigeon.FCM_V1.Config{})
       iex> receive do
       ...>   :ping -> "Got ping!"
       ...> after

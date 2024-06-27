@@ -1,10 +1,10 @@
-defmodule Pigeon.LegacyFCMTest do
+defmodule Pigeon.FCMTest do
   use ExUnit.Case
-  doctest Pigeon.LegacyFCM, import: true
-  doctest Pigeon.LegacyFCM.Config, import: true
-  doctest Pigeon.LegacyFCM.Notification, import: true
+  doctest Pigeon.FCM, import: true
+  doctest Pigeon.FCM.Config, import: true
+  doctest Pigeon.FCM.Notification, import: true
 
-  alias Pigeon.LegacyFCM.Notification
+  alias Pigeon.FCM.Notification
   require Logger
 
   @data %{"message" => "Test push"}
@@ -18,7 +18,7 @@ defmodule Pigeon.LegacyFCMTest do
     test "raises if configured with invalid key" do
       assert_raise(Pigeon.ConfigError, @invalid_key_msg, fn ->
         [key: nil]
-        |> Pigeon.LegacyFCM.init()
+        |> Pigeon.FCM.init()
       end)
     end
   end
@@ -28,7 +28,7 @@ defmodule Pigeon.LegacyFCMTest do
       notification =
         valid_fcm_reg_id()
         |> Notification.new(%{}, @data)
-        |> PigeonTest.LegacyFCM.push()
+        |> PigeonTest.FCM.push()
 
       expected = [success: valid_fcm_reg_id()]
       assert notification.response == expected
@@ -38,7 +38,7 @@ defmodule Pigeon.LegacyFCMTest do
       notification =
         [valid_fcm_reg_id(), "bad_reg_id"]
         |> Notification.new(%{}, @data)
-        |> PigeonTest.LegacyFCM.push()
+        |> PigeonTest.FCM.push()
 
       assert notification.response[:success] == valid_fcm_reg_id()
       assert notification.response[:invalid_registration] == "bad_reg_id"
@@ -48,7 +48,7 @@ defmodule Pigeon.LegacyFCMTest do
       reg_id = valid_fcm_reg_id()
       n = Notification.new(reg_id, %{}, @data)
       pid = self()
-      PigeonTest.LegacyFCM.push(n, on_response: fn x -> send(pid, x) end)
+      PigeonTest.FCM.push(n, on_response: fn x -> send(pid, x) end)
 
       assert_receive(n = %Notification{response: regids}, 5000)
       assert n.status == :success
@@ -59,7 +59,7 @@ defmodule Pigeon.LegacyFCMTest do
       reg_id = "bad_reg_id"
       n = Notification.new(reg_id, %{}, @data)
       pid = self()
-      PigeonTest.LegacyFCM.push(n, on_response: fn x -> send(pid, x) end)
+      PigeonTest.FCM.push(n, on_response: fn x -> send(pid, x) end)
 
       assert_receive(n = %Notification{}, 5000)
       assert n.status == :success

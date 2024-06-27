@@ -1,6 +1,6 @@
-defmodule Pigeon.FCM.Notification do
+defmodule Pigeon.FCM_V1.Notification do
   @moduledoc """
-  Defines FCM notification struct and convenience constructor functions.
+  Defines FCM_V1 notification struct and convenience constructor functions.
   """
 
   defstruct __meta__: %Pigeon.Metadata{},
@@ -43,7 +43,7 @@ defmodule Pigeon.FCM.Notification do
           | :unknown_error
 
   @typedoc ~S"""
-  FCM notification target. Must be one of the following:
+  FCM_V1 notification target. Must be one of the following:
 
   - `{:token, "string"}` - Registration token to send a message to.
   - `{:topic, "string"}` - Topic name to send a message to, e.g. "weather". 
@@ -54,35 +54,35 @@ defmodule Pigeon.FCM.Notification do
   @type target :: {:token, binary} | {:topic, binary} | {:condition, binary}
 
   @doc """
-  Creates `FCM.Notification` struct with given target and optional
+  Creates `FCM_V1.Notification` struct with given target and optional
   notification and data payloads.
 
   ## Examples
 
-      iex> Pigeon.FCM.Notification.new({:token, "reg ID"})
-      %Pigeon.FCM.Notification{
+      iex> Pigeon.FCM_V1.Notification.new({:token, "reg ID"})
+      %Pigeon.FCM_V1.Notification{
         data: nil,
         notification: nil,
         target: {:token, "reg ID"}
       }
 
-      iex> Pigeon.FCM.Notification.new({:topic, "example"})
-      %Pigeon.FCM.Notification{
+      iex> Pigeon.FCM_V1.Notification.new({:topic, "example"})
+      %Pigeon.FCM_V1.Notification{
         data: nil,
         notification: nil,
         target: {:topic, "example"}
       }
 
-      iex> Pigeon.FCM.Notification.new({:token, "reg ID"}, %{"body" => "test message"})
-      %Pigeon.FCM.Notification{
+      iex> Pigeon.FCM_V1.Notification.new({:token, "reg ID"}, %{"body" => "test message"})
+      %Pigeon.FCM_V1.Notification{
         data: nil,
         notification: %{"body" => "test message"},
         target: {:token, "reg ID"}
       }
 
-      iex> Pigeon.FCM.Notification.new({:token, "reg ID"}, %{"body" => "test message"},
+      iex> Pigeon.FCM_V1.Notification.new({:token, "reg ID"}, %{"body" => "test message"},
       ...> %{"key" => "value"})
-      %Pigeon.FCM.Notification{
+      %Pigeon.FCM_V1.Notification{
         data: %{"key" => "value"},
         notification: %{"body" => "test message"},
         target: {:token, "reg ID"}
@@ -92,7 +92,7 @@ defmodule Pigeon.FCM.Notification do
 
   def new({type, _} = target, notification, data)
       when type in [:token, :topic, :condition] do
-    %Pigeon.FCM.Notification{
+    %Pigeon.FCM_V1.Notification{
       target: target,
       notification: notification,
       data: data
@@ -100,7 +100,7 @@ defmodule Pigeon.FCM.Notification do
   end
 end
 
-defimpl Pigeon.Encodable, for: Pigeon.FCM.Notification do
+defimpl Pigeon.Encodable, for: Pigeon.FCM_V1.Notification do
   def binary_payload(notif) do
     encode_requests(notif)
   end

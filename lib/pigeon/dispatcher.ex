@@ -9,15 +9,15 @@ defmodule Pigeon.Dispatcher do
   ## Using Dynamic Dispatchers
 
   ```
-  # FCM as an example, but use the relevant options for your push type.
+  # FCM_V1 as an example, but use the relevant options for your push type.
   opts = [
-    adapter: Pigeon.FCM,
+    adapter: Pigeon.FCM_V1,
     project_id: "example-project-123",
     service_account_json: File.read!("service-account.json")
   ]
 
   {:ok, pid} = Pigeon.Dispatcher.start_link(opts)
-  notification = Pigeon.FCM.Notification.new({:token, "regid"})
+  notification = Pigeon.FCM_V1.Notification.new({:token, "regid"})
 
   Pigeon.push(pid, notification)
   ```
@@ -59,7 +59,7 @@ defmodule Pigeon.Dispatcher do
 
     defp push_spec(%{type: "fcm"} = config) do
       {Pigeon.Dispatcher, [
-        adapter: Pigeon.FCM,
+        adapter: Pigeon.FCM_V1,
         name: {:via, Registry, {Registry.YourApp, config.name}},
         project_id: config.project_id,
         service_account_json: config.service_account_json

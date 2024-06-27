@@ -1,14 +1,14 @@
-defmodule Pigeon.FCM do
+defmodule Pigeon.FCM_V1 do
   @moduledoc """
-  `Pigeon.Adapter` for Firebase Cloud Messaging (FCM) push notifications.
+  `Pigeon.Adapter` for Firebase Cloud Messaging (FCM V1) push notifications.
 
   ## Getting Started
 
-  1. Create a `FCM` dispatcher.
+  1. Create a `FCM_V1` dispatcher.
 
   ```
   # lib/fcm.ex
-  defmodule YourApp.FCM do
+  defmodule YourApp.FCM_V1 do
     use Pigeon.Dispatcher, otp_app: :your_app
   end
   ```
@@ -18,8 +18,8 @@ defmodule Pigeon.FCM do
   ```
   # config.exs
 
-  config :your_app, YourApp.FCM,
-    adapter: Pigeon.FCM,
+  config :your_app, YourApp.FCM_V1,
+    adapter: Pigeon.FCM_V1,
     project_id: "example-project-123",
     service_account_json: File.read!("service-account.json")
   ```
@@ -35,7 +35,7 @@ defmodule Pigeon.FCM do
     @doc false
     def start(_type, _args) do
       children = [
-        YourApp.FCM
+        YourApp.FCM_V1
       ]
       opts = [strategy: :one_for_one, name: YourApp.Supervisor]
       Supervisor.start_link(children, opts)
@@ -54,7 +54,7 @@ defmodule Pigeon.FCM do
     @doc false
     def start(_type, _args) do
       children = [
-        {YourApp.FCM, fcm_opts()}
+        {YourApp.FCM_V1, fcm_opts()}
       ]
       opts = [strategy: :one_for_one, name: YourApp.Supervisor]
       Supervisor.start_link(children, opts)
@@ -62,7 +62,7 @@ defmodule Pigeon.FCM do
 
     defp fcm_opts do
       [
-        adapter: Pigeon.FCM,
+        adapter: Pigeon.FCM_V1,
         project_id: "example-project-123",
         service_account_json: File.read!("service-account.json")
       ]
@@ -73,18 +73,18 @@ defmodule Pigeon.FCM do
   4. Create a notification.
 
   ```
-  n = Pigeon.FCM.Notification.new({:token, "reg ID"}, %{"body" => "test message"})
+  n = Pigeon.FCM_V1.Notification.new({:token, "reg ID"}, %{"body" => "test message"})
   ```
    
   5. Send the notification. 
 
-  On successful response, `:name` will be set to the name returned from the FCM 
+  On successful response, `:name` will be set to the name returned from the FCM V1
   API and `:response` will be `:success`. If there was an error, `:error` will 
   contain a JSON map of the response and `:response` will be an atomized version
   of the error type.
 
   ```
-  YourApp.FCM.push(n)
+  YourApp.FCM_V1.push(n)
   ```
   """
 
@@ -113,7 +113,7 @@ defmodule Pigeon.FCM do
 
   @impl true
   def init(opts) do
-    config = Pigeon.FCM.Config.new(opts)
+    config = Pigeon.FCM_V1.Config.new(opts)
     Configurable.validate!(config)
 
     state = %__MODULE__{config: config}

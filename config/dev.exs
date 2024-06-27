@@ -12,7 +12,7 @@ config :pigeon, PigeonTest.APNS,
   team_id: System.get_env("APNS_JWT_TEAM_ID"),
   mode: :dev
 
-config :pigeon, PigeonTest.FCM,
-  adapter: Pigeon.FCM,
+config :pigeon, PigeonTest.FCM_V1,
+  adapter: Pigeon.FCM_V1,
   project_id: System.get_env("FCM_PROJECT"),
   service_account_json: System.get_env("FCM_SERVICE_ACCOUNT_JSON")

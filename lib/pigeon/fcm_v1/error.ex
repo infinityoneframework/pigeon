@@ -1,7 +1,7 @@
-defmodule Pigeon.FCM.Error do
+defmodule Pigeon.FCM_V1.Error do
   @moduledoc false
 
-  alias Pigeon.FCM.Notification
+  alias Pigeon.FCM_V1.Notification
 
   @doc false
   @spec parse(map) :: Notification.error_response()
