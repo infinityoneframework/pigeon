@@ -32,6 +32,7 @@ defmodule Pigeon.FCM_V1Test do
   end
 
   describe "handle_push/3" do
+    @tag :live
     test "successfully sends a valid push" do
       notification =
         {:token, valid_fcm_reg_id()}
@@ -41,6 +42,7 @@ defmodule Pigeon.FCM_V1Test do
       assert notification.name
     end
 
+    @tag :live
     test "successfully sends a valid push with callback" do
       target = {:token, valid_fcm_reg_id()}
       n = Notification.new(target, %{}, @data)
@@ -52,6 +54,7 @@ defmodule Pigeon.FCM_V1Test do
       assert n.response == :success
     end
 
+    @tag :live
     test "successfully sends a valid push with a dynamic dispatcher" do
       target = {:token, valid_fcm_reg_id()}
       n = Notification.new(target, %{}, @data)

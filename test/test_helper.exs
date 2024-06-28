@@ -1,4 +1,5 @@
 ExUnit.start(capture_log: true)
+ExUnit.configure(exclude: [live: true])
 
 workers = [
   PigeonTest.ADM,

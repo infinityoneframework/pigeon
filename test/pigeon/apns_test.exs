@@ -58,6 +58,7 @@ defmodule Pigeon.APNSTest do
   end
 
   describe "init/1 (JWT)" do
+    @tag :live
     test "sends a push with valid config" do
       n =
         Pigeon.APNS.Notification.new(
@@ -119,6 +120,7 @@ defmodule Pigeon.APNSTest do
   end
 
   describe "push/1" do
+    @tag :live
     test "returns notification with :success on successful push" do
       n = test_notification("push/1")
       assert PigeonTest.APNS.push(n).response == :success
@@ -135,6 +137,7 @@ defmodule Pigeon.APNSTest do
       assert PigeonTest.APNS.push(n).response == :bad_device_token
     end
 
+    @tag :live
     test "returns list for multiple notifications" do
       n = test_notification("push/1")
 
@@ -156,6 +159,7 @@ defmodule Pigeon.APNSTest do
   end
 
   describe "push/2 with :on_response" do
+    @tag :live
     test "returns :success response on successful push" do
       pid = self()
       on_response = fn x -> send(pid, x) end
