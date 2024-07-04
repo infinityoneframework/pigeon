@@ -8,8 +8,8 @@ defmodule Pigeon do
 
     - `Pigeon.ADM` - Amazon Android.
     - `Pigeon.APNS` - Apple iOS.
-    - `Pigeon.FCM` - Firebase Cloud Messaging v1 API.
-    - `Pigeon.LegacyFCM` - Firebase Cloud Messaging Legacy API.
+    - `Pigeon.FCM_V1` - Firebase Cloud Messaging v1 API.
+    - `Pigeon.FCM` - Firebase Cloud Messaging Legacy API.
 
   ## Creating Dynamic Runtime Dispatchers
 

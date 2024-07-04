@@ -1,8 +1,8 @@
-defmodule Pigeon.LegacyFCM.Config do
+defmodule Pigeon.FCM.Config do
   @moduledoc false
 
   defstruct key: nil,
-            uri: 'fcm.googleapis.com',
+            uri: ~c"fcm.googleapis.com",
             port: 443
 
   @type t :: %__MODULE__{
@@ -12,16 +12,16 @@ defmodule Pigeon.LegacyFCM.Config do
         }
 
   @doc ~S"""
-  Returns a new `LegacyFCM.Config` with given `opts`.
+  Returns a new `FCM.Config` with given `opts`.
 
   ## Examples
 
-      iex> Pigeon.LegacyFCM.Config.new(
+      iex> Pigeon.FCM.Config.new(
       ...>   key: "fcm_key",
       ...>   uri: 'test.server.example.com',
       ...>   port: 5228
       ...> )
-      %Pigeon.LegacyFCM.Config{
+      %Pigeon.FCM.Config{
         key: "fcm_key",
         port: 5228, 
         uri: 'test.server.example.com'
@@ -30,13 +30,13 @@ defmodule Pigeon.LegacyFCM.Config do
   def new(opts) when is_list(opts) do
     %__MODULE__{
       key: Keyword.get(opts, :key),
-      uri: Keyword.get(opts, :uri, 'fcm.googleapis.com'),
+      uri: Keyword.get(opts, :uri, ~c"fcm.googleapis.com"),
       port: Keyword.get(opts, :port, 443)
     }
   end
 end
 
-defimpl Pigeon.Configurable, for: Pigeon.LegacyFCM.Config do
+defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
   @moduledoc false
 
   require Logger
@@ -44,7 +44,7 @@ defimpl Pigeon.Configurable, for: Pigeon.LegacyFCM.Config do
   import Pigeon.Tasks, only: [process_on_response: 1]
 
   alias Pigeon.Encodable
-  alias Pigeon.LegacyFCM.{Config, ResultParser}
+  alias Pigeon.FCM.{Config, ResultParser}
 
   @type sock :: {:sslsocket, any, pid | {any, any}}
 

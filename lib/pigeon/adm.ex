@@ -260,9 +260,9 @@ defmodule Pigeon.ADM do
              access_token_type: token_type
          }}
 
-      {:ok, %{body: response_body}} ->
+      {:ok, %{status_code: status, body: response_body}} ->
         {:ok, response_json} = Pigeon.json_library().decode(response_body)
-        Logger.error("Refresh token response: #{inspect(response_json)}")
+        Logger.error("Refresh token status : #{status}, response: #{inspect(response_json)}")
         {:error, response_json["reason"]}
     end
   end

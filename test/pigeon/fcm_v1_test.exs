@@ -1,10 +1,10 @@
-defmodule Pigeon.FCMTest do
+defmodule Pigeon.FCM_V1Test do
   use ExUnit.Case
-  doctest Pigeon.FCM, import: true
-  doctest Pigeon.FCM.Config, import: true
-  doctest Pigeon.FCM.Notification, import: true
+  doctest Pigeon.FCM_V1, import: true
+  doctest Pigeon.FCM_V1.Config, import: true
+  doctest Pigeon.FCM_V1.Notification, import: true
 
-  alias Pigeon.FCM.Notification
+  alias Pigeon.FCM_V1.Notification
   require Logger
 
   @data %{"message" => "Test push"}
@@ -19,33 +19,35 @@ defmodule Pigeon.FCMTest do
     test "raises if configured with invalid project" do
       assert_raise(Pigeon.ConfigError, @invalid_project_msg, fn ->
         [project_id: nil, token_fetcher: PigeonTest.Goth]
-        |> Pigeon.FCM.init()
+        |> Pigeon.FCM_V1.init()
       end)
     end
 
     test "raises if configured with invalid token_fetcher module" do
       assert_raise(Pigeon.ConfigError, @invalid_fetcher_msg, fn ->
         [project_id: "example", token_fetcher: nil]
-        |> Pigeon.FCM.init()
+        |> Pigeon.FCM_V1.init()
       end)
     end
   end
 
   describe "handle_push/3" do
+    @tag :live
     test "successfully sends a valid push" do
       notification =
         {:token, valid_fcm_reg_id()}
         |> Notification.new(%{}, @data)
-        |> PigeonTest.FCM.push()
+        |> PigeonTest.FCM_V1.push()
 
       assert notification.name
     end
 
+    @tag :live
     test "successfully sends a valid push with callback" do
       target = {:token, valid_fcm_reg_id()}
       n = Notification.new(target, %{}, @data)
       pid = self()
-      PigeonTest.FCM.push(n, on_response: fn x -> send(pid, x) end)
+      PigeonTest.FCM_V1.push(n, on_response: fn x -> send(pid, x) end)
 
       assert_receive(n = %Notification{target: ^target}, 5000)
       assert n.name
@@ -53,6 +55,7 @@ defmodule Pigeon.FCMTest do
     end
 
     @tag :focus
+    @tag :live
     test "successfully sends a valid push with a dynamic dispatcher" do
       target = {:token, valid_fcm_reg_id()}
       n = Notification.new(target, %{}, @data)
@@ -60,7 +63,7 @@ defmodule Pigeon.FCMTest do
 
       {:ok, dispatcher} =
         Pigeon.Dispatcher.start_link(
-          Application.get_env(:pigeon, PigeonTest.FCM)
+          Application.get_env(:pigeon, PigeonTest.FCM_V1)
         )
 
       Pigeon.push(dispatcher, n, on_response: fn x -> send(pid, x) end)
@@ -74,7 +77,7 @@ defmodule Pigeon.FCMTest do
       target = {:token, "bad_reg_id"}
       n = Notification.new(target, %{}, @data)
       pid = self()
-      PigeonTest.FCM.push(n, on_response: fn x -> send(pid, x) end)
+      PigeonTest.FCM_V1.push(n, on_response: fn x -> send(pid, x) end)
 
       assert_receive(n = %Notification{target: ^target}, 5000)
       assert n.error

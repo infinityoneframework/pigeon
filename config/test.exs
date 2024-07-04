@@ -26,12 +26,12 @@ config :pigeon, PigeonTest.APNS.JWT,
   team_id: System.get_env("APNS_JWT_TEAM_ID"),
   mode: :dev
 
-config :pigeon, PigeonTest.LegacyFCM,
-  adapter: Pigeon.LegacyFCM,
-  key: System.get_env("GCM_KEY")
-
 config :pigeon, PigeonTest.FCM,
   adapter: Pigeon.FCM,
+  key: System.get_env("GCM_KEY")
+
+config :pigeon, PigeonTest.FCM_V1,
+  adapter: Pigeon.FCM_V1,
   project_id: System.get_env("FCM_PROJECT"),
   token_fetcher: PigeonTest.Goth
 

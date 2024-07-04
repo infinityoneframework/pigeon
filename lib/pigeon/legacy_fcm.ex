@@ -1,14 +1,14 @@
-defmodule Pigeon.LegacyFCM do
+defmodule Pigeon.FCM do
   @moduledoc """
-  `Pigeon.Adapter` for Legacy Firebase Cloud Messaging (FCM) push notifications.
+  `Pigeon.Adapter` for  Firebase Cloud Messaging (FCM) push notifications.
 
   ## Getting Started
 
-  1. Create a `LegacyFCM` dispatcher.
+  1. Create a `FCM` dispatcher.
 
   ```
   # lib/legacy_fcm.ex
-  defmodule YourApp.LegacyFCM do
+  defmodule YourApp.FCM do
     use Pigeon.Dispatcher, otp_app: :your_app
   end
   ```
@@ -18,8 +18,8 @@ defmodule Pigeon.LegacyFCM do
   ```
   # config.exs
 
-  config :your_app, YourApp.LegacyFCM,
-    adapter: Pigeon.LegacyFCM,
+  config :your_app, YourApp.FCM,
+    adapter: Pigeon.FCM,
     key: "your_fcm_key_here"
   ```
 
@@ -34,7 +34,7 @@ defmodule Pigeon.LegacyFCM do
     @doc false
     def start(_type, _args) do
       children = [
-        YourApp.LegacyFCM
+        YourApp.FCM
       ]
       opts = [strategy: :one_for_one, name: YourApp.Supervisor]
       Supervisor.start_link(children, opts)
@@ -53,7 +53,7 @@ defmodule Pigeon.LegacyFCM do
     @doc false
     def start(_type, _args) do
       children = [
-        {YourApp.ADM, legacy_fcm_opts()}
+        {YourApp.FCM, legacy_fcm_opts()}
       ]
       opts = [strategy: :one_for_one, name: YourApp.Supervisor]
       Supervisor.start_link(children, opts)
@@ -61,7 +61,7 @@ defmodule Pigeon.LegacyFCM do
 
     defp legacy_fcm_opts do
       [
-        adapter: Pigeon.LegacyFCM, 
+        adapter: Pigeon.FCM, 
         key: "your_fcm_key_here"
       ]
     end
@@ -72,7 +72,7 @@ defmodule Pigeon.LegacyFCM do
 
   ```
   msg = %{"body" => "your message"}
-  n = Pigeon.LegacyFCM.Notification.new("your device registration ID", msg)
+  n = Pigeon.FCM.Notification.new("your device registration ID", msg)
   ```
    
   5. Send the notification. 
@@ -82,7 +82,7 @@ defmodule Pigeon.LegacyFCM do
   will contain a keyword list of individual registration ID responses.
 
   ```
-  YourApp.LegacyFCM.push(n)
+  YourApp.FCM.push(n)
   ```
 
   ## Sending to Multiple Registration IDs
@@ -97,7 +97,7 @@ defmodule Pigeon.LegacyFCM do
   ## Notification Struct
 
   ```
-  %Pigeon.LegacyFCM.Notification{
+  %Pigeon.FCM.Notification{
     collapse_key: nil | String.t(),
     dry_run: boolean,
     message_id: nil | String.t(),
@@ -118,13 +118,13 @@ defmodule Pigeon.LegacyFCM do
   ```
   notification = %{"body" => "your message"}
   data = %{"key" => "value"}
-  Pigeon.LegacyFCM.Notification.new("registration ID", notification, data)
+  Pigeon.FCM.Notification.new("registration ID", notification, data)
   ```
 
   or
 
   ```
-  Pigeon.LegacyFCM.Notification.new("registration ID")
+  Pigeon.FCM.Notification.new("registration ID")
   |> put_notification(%{"body" => "your message"})
   |> put_data(%{"key" => "value"})
   ```
@@ -196,7 +196,7 @@ defmodule Pigeon.LegacyFCM do
 
   @impl true
   def init(opts) do
-    config = Pigeon.LegacyFCM.Config.new(opts)
+    config = Pigeon.FCM.Config.new(opts)
     Configurable.validate!(config)
 
     state = %__MODULE__{config: config}

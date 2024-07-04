@@ -1,4 +1,5 @@
 ExUnit.start(capture_log: true)
+ExUnit.configure(exclude: [live: true])
 
 fcm_credentials =
   System.fetch_env!("FCM_SERVICE_ACCOUNT_FILE")
@@ -11,8 +12,8 @@ workers = [
   PigeonTest.ADM,
   PigeonTest.APNS,
   PigeonTest.APNS.JWT,
+  PigeonTest.FCM_V1,
   PigeonTest.FCM,
-  PigeonTest.LegacyFCM,
   PigeonTest.Sandbox
 ]
 

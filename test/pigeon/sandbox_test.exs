@@ -4,7 +4,7 @@ defmodule Pigeon.SandboxTest do
   test "marks nil :response as :success" do
     n =
       {:token, "test"}
-      |> Pigeon.FCM.Notification.new()
+      |> Pigeon.FCM_V1.Notification.new()
       |> PigeonTest.Sandbox.push()
 
     assert n.response == :success
@@ -13,7 +13,7 @@ defmodule Pigeon.SandboxTest do
   test "preserves not nil :response as is" do
     n =
       {:token, "test"}
-      |> Pigeon.FCM.Notification.new()
+      |> Pigeon.FCM_V1.Notification.new()
       |> Map.put(:response, :timeout)
       |> PigeonTest.Sandbox.push()
 

@@ -1,7 +1,7 @@
-defmodule Pigeon.LegacyFCM.ResultParserTest do
+defmodule Pigeon.FCM.ResultParserTest do
   use ExUnit.Case
 
-  alias Pigeon.LegacyFCM.{Notification, ResultParser}
+  alias Pigeon.FCM.{Notification, ResultParser}
 
   def assert_response(notif, expected) do
     assert notif.response == expected

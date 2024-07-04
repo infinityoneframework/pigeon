@@ -1,4 +1,4 @@
-defmodule Pigeon.FCM.Config do
+defmodule Pigeon.FCM_V1.Config do
   @moduledoc false
 
   defstruct token_fetcher: nil,
@@ -21,15 +21,15 @@ defmodule Pigeon.FCM.Config do
         }
 
   @doc ~S"""
-  Returns a new `FCM.Config` with given `opts`.
+  Returns a new `FCM_V1.Config` with given `opts`.
 
   ## Examples
 
-      iex> Pigeon.FCM.Config.new(
+      iex> Pigeon.FCM_V1.Config.new(
       ...>   project_id: "example-project",
       ...>   token_fetcher: YourApp.Goth
       ...> )
-      %Pigeon.FCM.Config{
+      %Pigeon.FCM_V1.Config{
         port: 443,
         project_id: "example-project",
         token_fetcher: YourApp.Goth,
@@ -48,13 +48,13 @@ defmodule Pigeon.FCM.Config do
   end
 end
 
-defimpl Pigeon.Configurable, for: Pigeon.FCM.Config do
+defimpl Pigeon.Configurable, for: Pigeon.FCM_V1.Config do
   @moduledoc false
 
   import Pigeon.Tasks, only: [process_on_response: 1]
 
   alias Pigeon.Encodable
-  alias Pigeon.FCM.Error
+  alias Pigeon.FCM_V1.Error
 
   @type sock :: {:sslsocket, any, pid | {any, any}}
 
