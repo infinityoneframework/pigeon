@@ -215,6 +215,14 @@ defmodule Pigeon.FCM_V1 do
     end
   end
 
+  def set_notification(%{"tag" => tag} = notification) do
+    notification
+    |> Map.put_new("body", tag)
+    |> Map.delete("tag")
+  end
+
+  def set_notification(n), do: n
+
   defp connect_socket(config), do: connect_socket(config, @max_retries)
 
   defp connect_socket(config, tries) do

@@ -103,6 +103,11 @@ defmodule Pigeon do
     for n <- notifications, do: push(pid, n, opts)
   end
 
+  def push(pid, %{__meta__: %{on_response: on_response}} = notification, _opts)
+      when not is_nil(on_response) do
+    push_async(pid, notification)
+  end
+
   def push(pid, notification, opts) do
     if Keyword.has_key?(opts, :on_response) do
       on_response = Keyword.get(opts, :on_response)

@@ -3,6 +3,7 @@ defmodule Pigeon.FCM_V1.Notification do
   Defines FCM_V1 notification struct and convenience constructor functions.
   """
 
+  @derive {Jason.Encoder, except: [:__struct__, :__meta__]}
   defstruct __meta__: %Pigeon.Metadata{},
             android: nil,
             apns: nil,
@@ -98,6 +99,14 @@ defmodule Pigeon.FCM_V1.Notification do
       data: data
     }
   end
+
+  def new(%{token: _} = target, notification, data) do
+    %Pigeon.FCM_V1.Notification{
+      target: target,
+      notification: notification,
+      data: data
+    }
+  end
 end
 
 defimpl Pigeon.Encodable, for: Pigeon.FCM_V1.Notification do
@@ -124,6 +133,14 @@ defimpl Pigeon.Encodable, for: Pigeon.FCM_V1.Notification do
 
   defp encode_target(map, {type, value}) do
     Map.put(map, to_string(type), value)
+  end
+
+  defp encode_target(map, target) when is_map(target) do
+    hd(
+      for type <- Map.keys(target),
+          type in ~w(token topic condition)a,
+          do: Map.put(map, to_string(type), Map.get(target, type))
+    )
   end
 
   defp maybe_encode_attr(map, _key, nil), do: map

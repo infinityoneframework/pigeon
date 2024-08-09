@@ -4,8 +4,11 @@ defmodule Pigeon.Metadata do
   """
 
   @type t :: %__MODULE__{
-          on_response: Pigeon.on_response() | nil
+          on_response: Pigeon.on_response() | nil,
+          notification: map | nil
         }
 
-  defstruct on_response: nil
+  @derive {Jason.Encoder, only: []}
+  defstruct on_response: nil,
+            notification: nil
 end

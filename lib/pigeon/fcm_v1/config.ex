@@ -108,6 +108,7 @@ defimpl Pigeon.Configurable, for: Pigeon.FCM_V1.Config do
   def handle_end_stream(_config, %{error: nil} = stream, notif) do
     stream.body
     |> Pigeon.json_library().decode!()
+    |> IO.inspect(label: "decoded response_body")
     |> case do
       %{"name" => name} ->
         notif

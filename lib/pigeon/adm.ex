@@ -262,7 +262,11 @@ defmodule Pigeon.ADM do
 
       {:ok, %{status_code: status, body: response_body}} ->
         {:ok, response_json} = Pigeon.json_library().decode(response_body)
-        Logger.error("Refresh token status : #{status}, response: #{inspect(response_json)}")
+
+        Logger.error(
+          "Refresh token status : #{status}, response: #{inspect(response_json)}"
+        )
+
         {:error, response_json["reason"]}
     end
   end
