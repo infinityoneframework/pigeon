@@ -50,8 +50,10 @@ defmodule Pigeon.FCM.Notification do
     Note: "/topics/" prefix should not be provided.
   - `{:condition, "string"}` - Condition to send a message to, e.g. "'foo' 
     in topics && 'bar' in topics".
+  - a map containing precisely one key from the three above and a string value
   """
   @type target :: {:token, binary} | {:topic, binary} | {:condition, binary}
+     | map
 
   @doc """
   Creates `FCM.Notification` struct with given target and optional
@@ -98,6 +100,14 @@ defmodule Pigeon.FCM.Notification do
       data: data
     }
   end
+
+  def new(%{token: _} = target, notification, data) do
+    %Pigeon.FCM.Notification{
+      target: target,
+      notification: notification,
+      data: data
+    }
+  end
 end
 
 defimpl Pigeon.Encodable, for: Pigeon.FCM.Notification do
@@ -124,6 +134,11 @@ defimpl Pigeon.Encodable, for: Pigeon.FCM.Notification do
 
   defp encode_target(map, {type, value}) do
     Map.put(map, to_string(type), value)
+  end
+
+  defp encode_target(map, target) when is_map(target) and Kernel.map_size(target) == 1 do
+    type = hd(Map.keys(target))
+    Map.put(map, to_string(type), Map.get(target, type))
   end
 
   defp maybe_encode_attr(map, _key, nil), do: map
