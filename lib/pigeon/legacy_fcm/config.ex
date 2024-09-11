@@ -166,8 +166,12 @@ defimpl Pigeon.Configurable, for: Pigeon.LegacyFCM.Config do
 
   def parse_error(data) do
     case Pigeon.json_library().decode(data) do
+      {:ok, %{"reason" => reason}} ->
+        reason |> Macro.underscore() |> String.to_existing_atom()
+
       {:ok, response} ->
-        response["reason"] |> Macro.underscore() |> String.to_existing_atom()
+        Logger.warning("error with no reason #{response["error"]}")
+        :unspecified_reason
 
       error ->
         "JSON parse failed: #{inspect(error)}, body: #{inspect(data)}"
